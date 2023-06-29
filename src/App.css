@@ -1,16 +1,15 @@
 .app {
-}
-
-.app_header {
   margin: 0;
 }
 
-.wrapper-chat {
+.app_header {
+}
+
+.wrapper_chat {
   display: grid;
   grid-template-columns: 300px 350px 300px;
 }
 
-.chat_room_toolbar,
 .chat_list_title,
 .chat_list_item,
 .chat_list_item_pinned,
@@ -20,19 +19,30 @@
   display: flex;
 }
 
-.chat_room_toolbar {
-  justify-content: flex-end;
-}
-
-.chat_list {
+.chat_list_container {
   background-color: aquamarine;
 }
-.chat_room {
-  background-color: aqua;
-  flex-direction: column;
+
+.chat_room_info_container {
+  background-color: beige;
 }
 
-.chat_room_content {
+.chat_title {
+  cursor: pointer;
+}
+
+.chat_content_container {
+  background-color: #fff;
+}
+
+.chat_room {
+  flex-direction: column;
+}
+.chat_room_container {
+  background-color: aqua;
+}
+
+.chat_content {
   background-color: cadetblue;
   padding: 9px;
   border-radius: 4px;
@@ -41,19 +51,18 @@
   left: 0;
   right: 0;
 }
-.chat_room_content_container {
-  background-color: #fff;
+
+.right_toolbar,
+.right_toolbar > button {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.chat_room_info {
-  background-color: beige;
-}
-
-.receive-msg {
+.receive_msg {
   text-align: left;
 }
 
-.send-msg {
+.send_msg {
   text-align: right;
 }
 
