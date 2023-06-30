@@ -1,10 +1,14 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface INewMessage {
-  setItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
 }
 
-export default function NewMessage({ setItems }: INewMessage) {
+export default function NewMessage({
+  setChatListItems,
+  setShowChatRoom,
+}: INewMessage) {
   const input = useRef(null);
   const [newRoom, setNewRoom] = useState("");
 
@@ -28,10 +32,10 @@ export default function NewMessage({ setItems }: INewMessage) {
 
     document.getElementById("new_room")?.setAttribute("hidden", "");
 
-    setItems((items) => {
+    setChatListItems((items) => {
       return [...items, { key: newRoom }];
     });
-
+    setShowChatRoom((showRoom) => !showRoom);
     setNewRoom((input) => {
       console.log(input);
       return "";

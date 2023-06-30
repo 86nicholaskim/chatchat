@@ -1,7 +1,10 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface IChatRoomContents {
-  setItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setshowRoomInfo: Dispatch<SetStateAction<boolean>>;
+  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  showRoomInfo: boolean;
   userId: string;
   chatId: string;
   msgList: {
@@ -15,7 +18,10 @@ interface IChatRoomContents {
 }
 
 export default function ChatRoomContents({
-  setItems,
+  setChatListItems,
+  setshowRoomInfo,
+  setShowChatRoom,
+  showRoomInfo,
   userId,
   chatId,
   msgList,
@@ -33,13 +39,15 @@ export default function ChatRoomContents({
                 onClick={(e) => {
                   console.log("멤버보기");
 
-                  document.getElementById("chat_room_info_container")?.hidden
-                    ? document
-                        .getElementById("chat_room_info_container")
-                        ?.removeAttribute("hidden")
-                    : document
-                        .getElementById("chat_room_info_container")
-                        ?.setAttribute("hidden", "");
+                  setshowRoomInfo((show) => !show);
+
+                  // document.getElementById("chat_room_info_container")?.hidden
+                  //   ? document
+                  //       .getElementById("chat_room_info_container")
+                  //       ?.removeAttribute("hidden")
+                  //   : document
+                  //       .getElementById("chat_room_info_container")
+                  //       ?.setAttribute("hidden", "");
                 }}
               >
                 멤버
@@ -47,19 +55,25 @@ export default function ChatRoomContents({
               <button
                 id="exit"
                 onClick={(e) => {
-                  setItems((items) =>
+                  setChatListItems((items) =>
                     items.filter((item) => item.key !== chatId)
                   );
 
                   // chat info
-                  document
-                    .getElementById("chat_room_info_container")
-                    ?.setAttribute("hidden", "");
+                  showRoomInfo && setshowRoomInfo((showRoom) => !showRoom);
 
                   // chat room
-                  document
-                    .getElementById("chat_room_container")
-                    ?.setAttribute("hidden", "");
+                  setShowChatRoom((show) => !show);
+
+                  // // chat info
+                  // document
+                  //   .getElementById("chat_room_info_container")
+                  //   ?.setAttribute("hidden", "");
+
+                  // // chat room
+                  // document
+                  //   .getElementById("chat_room_container")
+                  //   ?.setAttribute("hidden", "");
                 }}
               >
                 나가기

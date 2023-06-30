@@ -4,11 +4,16 @@ import NewMessage from "./NewMessage";
 import PinnedMessage from "./PinnedMessage";
 
 interface IChatList {
-  setItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  items: { key: string }[];
+  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  chatList: { key: string }[];
 }
 
-export default function ChatList({ setItems, items }: IChatList) {
+export default function ChatList({
+  setChatListItems,
+  setShowChatRoom,
+  chatList,
+}: IChatList) {
   return (
     <>
       <div className="chat_list_container">
@@ -17,9 +22,12 @@ export default function ChatList({ setItems, items }: IChatList) {
             <h1>chat_list</h1>
           </div>
           <div className="chat_list_contents">
-            <NewMessage setItems={setItems} />
+            <NewMessage
+              setShowChatRoom={setShowChatRoom}
+              setChatListItems={setChatListItems}
+            />
             <PinnedMessage />
-            <AllMessage items={items} />
+            <AllMessage chatList={chatList} setShowChatRoom={setShowChatRoom} />
           </div>
         </div>
       </div>

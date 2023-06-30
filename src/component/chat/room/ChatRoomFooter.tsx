@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 interface IChatRoomFooter {
-  //setItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  //setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
   userId: string;
   chatId: string;
   setChatRoomMessage: Dispatch<

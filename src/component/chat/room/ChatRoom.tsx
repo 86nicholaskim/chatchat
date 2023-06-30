@@ -1,16 +1,26 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import ChatRoomHeader from "./ChatRoomHeader";
 import ChatRoomContents from "./ChatRoomContents";
 import ChatRoomFooter from "./ChatRoomFooter";
 import { getChatRoomData } from "../../../api/chat/chat_api";
 interface IChatRoom {
-  setItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setshowRoomInfo: Dispatch<SetStateAction<boolean>>;
+  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  showRoomInfo: boolean;
   chatId?: string;
   userId: string;
-  items: { key: string }[];
+  chatList: { key: string }[];
 }
 
-export default function ChatRoom({ items, setItems, userId }: IChatRoom) {
+export default function ChatRoom({
+  chatList,
+  setShowChatRoom,
+  setChatListItems,
+  setshowRoomInfo,
+  showRoomInfo,
+  userId,
+}: IChatRoom) {
   const chatId = "chatList_#001";
 
   const msgList = [
@@ -56,15 +66,29 @@ export default function ChatRoom({ items, setItems, userId }: IChatRoom) {
     },
   ];
 
+  useEffect(() => {
+    //채팅서버연결
+    console.log("mount/ update");
+
+    return () => {
+      //채팅서버종료
+
+      console.log("unmount");
+    };
+  }, []);
+
   const [chatRoomMessageList, setChatRoomMessage] = useState(msgList);
 
   return (
     <>
-      <div className="chat_room_container" hidden>
+      <div className="chat_room_container">
         <div className="chat_room" id="chat_room">
           <ChatRoomHeader />
           <ChatRoomContents
-            setItems={setItems}
+            setChatListItems={setChatListItems}
+            setshowRoomInfo={setshowRoomInfo}
+            setShowChatRoom={setShowChatRoom}
+            showRoomInfo={showRoomInfo}
             userId={userId}
             chatId={chatId}
             msgList={chatRoomMessageList}
@@ -72,7 +96,7 @@ export default function ChatRoom({ items, setItems, userId }: IChatRoom) {
           <ChatRoomFooter
             userId={userId}
             chatId={chatId}
-            //setItems={setItems}
+            //setChatListItems={setChatListItems}
             setChatRoomMessage={setChatRoomMessage}
           />
         </div>
