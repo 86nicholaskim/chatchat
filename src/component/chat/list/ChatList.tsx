@@ -2,17 +2,24 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 import AllMessage from "./AllMessage";
 import NewMessage from "./NewMessage";
 import PinnedMessage from "./PinnedMessage";
+import { IChatRoom } from "../../../api/chat/chat_api";
 
 interface IChatList {
   setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
   setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
   chatList: { key: string }[];
+  chatCurrentData: IChatRoom;
+  setChatId: Dispatch<SetStateAction<string>>;
 }
 
 export default function ChatList({
   setChatListItems,
   setShowChatRoom,
+  setChatId,
+  setChatRoom,
   chatList,
+  chatCurrentData,
 }: IChatList) {
   return (
     <>
@@ -25,9 +32,16 @@ export default function ChatList({
             <NewMessage
               setShowChatRoom={setShowChatRoom}
               setChatListItems={setChatListItems}
+              setChatRoom={setChatRoom}
             />
             <PinnedMessage />
-            <AllMessage chatList={chatList} setShowChatRoom={setShowChatRoom} />
+            <AllMessage
+              chatList={chatList}
+              setChatId={setChatId}
+              setShowChatRoom={setShowChatRoom}
+              setChatRoom={setChatRoom}
+              chatCurrentData={chatCurrentData}
+            />
           </div>
         </div>
       </div>

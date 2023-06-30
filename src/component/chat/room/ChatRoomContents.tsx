@@ -1,88 +1,107 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { IChatRoom, IRoom, getChatRoomData } from "../../../api/chat/chat_api";
 
 interface IChatRoomContents {
   setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  setshowRoomInfo: Dispatch<SetStateAction<boolean>>;
+  setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
   setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
   showRoomInfo: boolean;
   userId: string;
   chatId: string;
-  msgList: {
-    key: string;
-    msg_type: string;
-    msg: string;
-    userId: string;
-    write_time: string;
-    room_number: string;
-  }[];
+  chatCurrentData: IChatRoom;
+  chatRoom: IChatRoom;
 }
 
 export default function ChatRoomContents({
   setChatListItems,
-  setshowRoomInfo,
+  setShowRoomInfo,
   setShowChatRoom,
+  setChatRoom,
   showRoomInfo,
   userId,
   chatId,
-  msgList,
+  chatCurrentData,
+  chatRoom,
 }: IChatRoomContents) {
+  console.log(chatCurrentData);
+
+  console.log(chatCurrentData);
+
+  // useEffect(() => {
+  //   console.log("ChatRoomContents mount/update");
+
+  //   setChatRoom((roomData) => {
+  //     return {
+  //       ...roomData,
+  //       key: chatCurrentData.key,
+  //       data: chatCurrentData.data,
+  //     };
+  //   });
+
+  //   return () => {
+  //     console.log("ChatRoomContents unmount");
+  //   };
+  // }, []);
+
   return (
     <>
-      <div className="chat_room_container" id={chatId}>
-        <div className="chat_content">
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div className="left_toolbar">
-              <div className="chat_title">{chatId}</div>
-            </div>
-            <div className="right_toolbar">
-              <button
-                onClick={(e) => {
-                  console.log("멤버보기");
-
-                  setshowRoomInfo((show) => !show);
-
-                  // document.getElementById("chat_room_info_container")?.hidden
-                  //   ? document
-                  //       .getElementById("chat_room_info_container")
-                  //       ?.removeAttribute("hidden")
-                  //   : document
-                  //       .getElementById("chat_room_info_container")
-                  //       ?.setAttribute("hidden", "");
-                }}
-              >
-                멤버
-              </button>
-              <button
-                id="exit"
-                onClick={(e) => {
-                  setChatListItems((items) =>
-                    items.filter((item) => item.key !== chatId)
-                  );
-
-                  // chat info
-                  showRoomInfo && setshowRoomInfo((showRoom) => !showRoom);
-
-                  // chat room
-                  setShowChatRoom((show) => !show);
-
-                  // // chat info
-                  // document
-                  //   .getElementById("chat_room_info_container")
-                  //   ?.setAttribute("hidden", "");
-
-                  // // chat room
-                  // document
-                  //   .getElementById("chat_room_container")
-                  //   ?.setAttribute("hidden", "");
-                }}
-              >
-                나가기
-              </button>
-            </div>
+      <div className="chat_content">
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="left_toolbar">
+            <div className="chat_title">{chatId}</div>
           </div>
-          <div className="chat_content_container">
-            <ul id="chat_room_content_container_messages">
-              {msgList.map((msgInfo) => {
+          <div className="right_toolbar">
+            <button
+              onClick={(e) => {
+                console.log("멤버보기");
+                debugger;
+                setShowRoomInfo((show) => !show);
+
+                // document.getElementById("chat_room_info_container")?.hidden
+                //   ? document
+                //       .getElementById("chat_room_info_container")
+                //       ?.removeAttribute("hidden")
+                //   : document
+                //       .getElementById("chat_room_info_container")
+                //       ?.setAttribute("hidden", "");
+              }}
+            >
+              멤버보기
+            </button>
+            <button
+              id="exit"
+              onClick={(e) => {
+                setChatListItems((items) =>
+                  items.filter((item) => item.key !== chatId)
+                );
+
+                // chat info
+                showRoomInfo && setShowRoomInfo((showRoom) => !showRoom);
+
+                // chat room
+                setShowChatRoom((show) => !show);
+
+                // // chat info
+                // document
+                //   .getElementById("chat_room_info_container")
+                //   ?.setAttribute("hidden", "");
+
+                // // chat room
+                // document
+                //   .getElementById("chat_room_container")
+                //   ?.setAttribute("hidden", "");
+              }}
+            >
+              나가기
+            </button>
+          </div>
+        </div>
+        <div className="chat_content_container">
+          <ul id="chat_room_content_container_messages">
+            {
+              /*chatRoom.data.map((msgInfo) => {*/
+              chatCurrentData.data.map((msgInfo) => {
                 return (
                   <li key={msgInfo.key} className={msgInfo.msg_type}>
                     <div className="msg_content">{msgInfo.msg}</div>
@@ -90,9 +109,9 @@ export default function ChatRoomContents({
                     <div className="msg_write_time">{msgInfo.write_time}</div>
                   </li>
                 );
-              })}
-            </ul>
-          </div>
+              })
+            }
+          </ul>
         </div>
       </div>
     </>

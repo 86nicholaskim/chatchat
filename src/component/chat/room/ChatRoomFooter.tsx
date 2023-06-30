@@ -1,24 +1,16 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
+
+import { IChatRoom } from "../../../api/chat/chat_api";
+
 interface IChatRoomFooter {
   //setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
   userId: string;
   chatId: string;
-  setChatRoomMessage: Dispatch<
-    SetStateAction<
-      {
-        key: string;
-        msg_type: string;
-        msg: string;
-        userId: string;
-        write_time: string;
-        room_number: string;
-      }[]
-    >
-  >;
+  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
 }
 
 export default function ChatRoomFooter({
-  setChatRoomMessage,
+  setChatRoom,
   userId,
   chatId,
 }: IChatRoomFooter) {
@@ -51,19 +43,34 @@ export default function ChatRoomFooter({
     if (!newMsg) {
       return;
     }
+    //(roomData) => roomData && { ...roomData, result }
+    setChatRoom((roomData) => {
+      return {
+        ...roomData,
+        key: e.timeStamp.toString(),
+        data: roomData.data
+          ? roomData.data.concat({
+              key: e.timeStamp.toString(),
+              msg_type: "send_msg",
+              msg: newMsg,
+              userId: userId,
+              write_time: new Date().toLocaleTimeString(),
+              room_number: chatId,
+            })
+          : roomData.data,
+      };
 
-    setChatRoomMessage((messgeList) => {
-      return [
-        ...messgeList,
-        {
-          key: e.timeStamp.toString(),
-          msg_type: "send_msg",
-          msg: newMsg,
-          userId: userId,
-          write_time: new Date().toLocaleTimeString(),
-          room_number: chatId,
-        },
-      ];
+      // [
+      //   ...messgeList,
+      //   {
+      //     key: e.timeStamp.toString(),
+      //     msg_type: "send_msg",
+      //     msg: newMsg,
+      //     userId: userId,
+      //     write_time: new Date().toLocaleTimeString(),
+      //     room_number: chatId,
+      //   },
+      // ];
     });
 
     console.log("sendChatMessage");

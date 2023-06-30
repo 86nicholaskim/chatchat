@@ -1,15 +1,18 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { getChatRoomData, IChatRoom, IRoom } from "../../../api/chat/chat_api";
 
 interface INewMessage {
   setShowChatRoom: Dispatch<SetStateAction<boolean>>;
   setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
 }
 
 export default function NewMessage({
   setChatListItems,
   setShowChatRoom,
+  setChatRoom,
 }: INewMessage) {
-  const input = useRef(null);
+  //const input = useRef(null);
   const [newRoom, setNewRoom] = useState("");
 
   const createChatRoom = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,6 +42,19 @@ export default function NewMessage({
     setNewRoom((input) => {
       console.log(input);
       return "";
+    });
+
+    getChatRoomData(newRoom).then((result) => {
+      debugger;
+      console.log(newRoom);
+      setChatRoom((roomData) => {
+        return {
+          ...roomData,
+          key: result.key,
+          data: result.data,
+          members: result.members,
+        };
+      });
     });
   };
 

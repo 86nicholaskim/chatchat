@@ -1,19 +1,56 @@
-interface IChatRoomData {
+export interface IRoom {
+  key?: string;
+  msg_type?: string;
+  msg?: string;
+  userId?: string;
+  write_time?: string;
+  room_number?: string;
+}
+export interface IChatRoom {
   key: string;
-  data: {
-    key: string;
-    msg_type: string;
-    msg: string;
-    userId: string;
-    write_time: string;
-    room_number: string;
+  members: {
+    key?: string;
+    member_name?: string;
+    member_type?: string;
+    member_class?: string;
   }[];
+  data: IRoom[];
 }
 
-export function getChatRoomData(chatId: string): IChatRoomData {
+export interface IChatRoomMember {
+  key?: string;
+  member_name?: string;
+  member_type?: string;
+  member_class?: string;
+}
+
+export async function getChatRoomData(chatId: string): Promise<IChatRoom> {
+  //export function getChatRoomData(chatId: string): IChatRoom {
+  console.log("getChatRoomData");
+
   const chatRoomData = [
     {
       key: "chatList_#001",
+      members: [
+        {
+          key: "113111.800000004",
+          member_name: "1member 1",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+        {
+          key: "223111.800000004",
+          member_name: "2member 2",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+        {
+          key: "333111.800000004",
+          member_name: "3member 3",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+      ],
       data: [
         {
           key: "555555.700000003",
@@ -57,14 +94,80 @@ export function getChatRoomData(chatId: string): IChatRoomData {
         },
       ],
     },
-    { key: "chatList_#002", data: [] },
-    { key: "chatList_#003", data: [] },
+    {
+      key: "chatList_#002",
+      members: [
+        {
+          key: "113344.800000004",
+          member_name: "member 11",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+        {
+          key: "223344.800000004",
+          member_name: "member 22",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+        {
+          key: "333344.800000004",
+          member_name: "member 33",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+      ],
+      data: [
+        {
+          key: "445555.800000003",
+          msg_type: "send_msg",
+          msg: "안녕~~안녕안녕",
+          userId: "user_1",
+          write_time: "오전 9:10",
+          room_number: "chatList_#002",
+        },
+      ],
+    },
+    {
+      key: "chatList_#003",
+      members: [
+        {
+          key: "114344.800000004",
+          member_name: "member 111",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+        {
+          key: "224344.800000004",
+          member_name: "member 222",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+        {
+          key: "334344.800000004",
+          member_name: "member 333",
+          member_type: "member_info",
+          member_class: "member-info",
+        },
+      ],
+      data: [
+        {
+          key: "665555.800000003",
+          msg_type: "send_msg",
+          msg: "안녕~~안녕안녕안녕안녕",
+          userId: "user_1",
+          write_time: "오전 9:20",
+          room_number: "chatList_#003",
+        },
+      ],
+    },
   ];
+  //return await chatRoomData;
   return (
     chatRoomData.find((x) => x.key === chatId) ||
     ({
-      key: "",
+      key: chatId,
+      members: [],
       data: [],
-    } as IChatRoomData)
+    } as IChatRoom)
   );
 }
