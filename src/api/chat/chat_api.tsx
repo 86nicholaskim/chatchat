@@ -167,7 +167,16 @@ export async function getChatRoomData(chatId: string): Promise<IChatRoom> {
     ({
       key: chatId,
       members: [],
-      data: [],
+      data: [
+        {
+          key: "665555.899000003",
+          msg_type: "",
+          msg: "대화방이 만들어졌습니다.",
+          userId: "system",
+          write_time: new Date().toLocaleTimeString(),
+          room_number: chatId,
+        },
+      ],
     } as IChatRoom)
   );
 }

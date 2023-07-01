@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { JsxElement } from "typescript";
-import { IChatRoom } from "../../../api/chat/chat_api";
+import { IChatRoom, getChatRoomData } from "../../../api/chat/chat_api";
 
 interface IAllMessage {
   chatList: { key: string }[];
@@ -24,19 +24,25 @@ export default function AllMessage({
     const chatKey = e.currentTarget.innerText;
     setChatId((id) => chatKey);
     console.log("setChatId");
+    console.log(chatKey);
 
-    // 2 chat room 보이기
-    setShowChatRoom((prev) => true);
-    console.log("setShowChatRoom");
-    // 3. chat room 행데이터
-    setChatRoom((roomData) => {
-      return {
-        ...roomData,
-        key: chatCurrentData.key,
-        data: chatCurrentData.data,
-      };
-    });
-    console.log("setChatRoom");
+    getChatRoomData(chatKey)
+      .then((result) => {
+        // 3. chat room 행데이터
+        setChatRoom((roomData) => {
+          return {
+            ...roomData,
+            key: result.key,
+            data: result.data,
+          };
+        });
+        console.log("setChatRoom");
+      })
+      .then(() => {
+        // 2 chat room 보이기
+        setShowChatRoom((prev) => true);
+        console.log("setShowChatRoom");
+      });
   }
 
   return (

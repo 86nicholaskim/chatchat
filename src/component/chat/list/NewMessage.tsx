@@ -5,12 +5,18 @@ interface INewMessage {
   setShowChatRoom: Dispatch<SetStateAction<boolean>>;
   setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
   setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
+  setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
+  showRoomInfo: boolean;
+  showChatRoom: boolean;
 }
 
 export default function NewMessage({
   setChatListItems,
   setShowChatRoom,
   setChatRoom,
+  setShowRoomInfo,
+  showRoomInfo,
+  showChatRoom,
 }: INewMessage) {
   //const input = useRef(null);
   const [newRoom, setNewRoom] = useState("");
@@ -67,6 +73,12 @@ export default function NewMessage({
             <button
               onClick={() => {
                 document.getElementById("new_room")?.removeAttribute("hidden");
+                debugger;
+                // chat info
+                showRoomInfo && setShowRoomInfo((showRoom) => !showRoom);
+
+                // chat room
+                showChatRoom && setShowChatRoom((show) => !show);
               }}
             >
               (+)New

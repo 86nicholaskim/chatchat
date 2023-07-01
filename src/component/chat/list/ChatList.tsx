@@ -11,6 +11,9 @@ interface IChatList {
   chatList: { key: string }[];
   chatCurrentData: IChatRoom;
   setChatId: Dispatch<SetStateAction<string>>;
+  setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
+  showRoomInfo: boolean;
+  showChatRoom: boolean;
 }
 
 export default function ChatList({
@@ -18,8 +21,11 @@ export default function ChatList({
   setShowChatRoom,
   setChatId,
   setChatRoom,
+  setShowRoomInfo,
   chatList,
   chatCurrentData,
+  showRoomInfo,
+  showChatRoom,
 }: IChatList) {
   return (
     <>
@@ -33,6 +39,9 @@ export default function ChatList({
               setShowChatRoom={setShowChatRoom}
               setChatListItems={setChatListItems}
               setChatRoom={setChatRoom}
+              setShowRoomInfo={setShowRoomInfo}
+              showRoomInfo={showRoomInfo}
+              showChatRoom={showChatRoom}
             />
             <PinnedMessage />
             <AllMessage

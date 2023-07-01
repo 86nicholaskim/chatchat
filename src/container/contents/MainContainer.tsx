@@ -17,7 +17,7 @@ export default function MainContainer() {
   };
 
   const [chatList, setChatListItems] = useState(_chatList || []);
-  const [chatId, setChatId] = useState("chatList_#001");
+  const [chatId, setChatId] = useState("");
   const [showChatRoom, setShowChatRoom] = useState(false);
   const [showRoomInfo, setShowRoomInfo] = useState(false);
 
@@ -78,11 +78,14 @@ export default function MainContainer() {
           <ChatList
             setChatListItems={setChatListItems}
             setShowChatRoom={setShowChatRoom}
-            chatList={chatList}
+            setChatRoom={setChatRoom}
+            setShowRoomInfo={setShowRoomInfo}
             setChatId={setChatId}
+            chatList={chatList}
             //chatCurrentData={chatData.current}
             chatCurrentData={chatRoom}
-            setChatRoom={setChatRoom}
+            showRoomInfo={showRoomInfo}
+            showChatRoom={showChatRoom}
           />
           {showChatRoom ? (
             <ChatRoom
