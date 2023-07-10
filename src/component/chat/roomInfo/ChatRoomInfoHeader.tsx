@@ -1,4 +1,6 @@
-export default function ChatRoomInfoHeader() {
+import React from "react";
+
+const ChatRoomInfoHeader = React.memo(() => {
   return (
     <>
       <div className="chat_room_info_top">
@@ -10,4 +12,6 @@ export default function ChatRoomInfoHeader() {
       </div>
     </>
   );
-}
+});
+
+export default ChatRoomInfoHeader;

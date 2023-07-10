@@ -1,4 +1,6 @@
-export default function ChatRoomInfoAttachments() {
+import { memo } from "react";
+
+const ChatRoomInfoAttachments = memo(() => {
   const attachItems = [
     {
       key: "777777.700000003",
@@ -48,29 +50,10 @@ export default function ChatRoomInfoAttachments() {
               </li>
             );
           })}
-
-          {/* <li className="attachments-info-document">
-            <div className="attachments-info-document-content">
-              <div>129 Files - 375MB</div>
-            </div>
-          </li>
-          <li className="attachments-info-photo">
-            <div className="attachments-info-photo-content">
-              <div>829 Files - 17GB</div>
-            </div>
-          </li>
-          <li className="attachments-info-videos">
-            <div className="attachments-info-videos-content">
-              <div>82 Files - 27GB</div>
-            </div>
-          </li>
-          <li className="attachments-info-others">
-            <div className="attachments-info-others-content">
-              <div>182 Files - 19GB</div>
-            </div>
-          </li> */}
         </ul>
       </div>
     </>
   );
-}
+});
+
+export default ChatRoomInfoAttachments;

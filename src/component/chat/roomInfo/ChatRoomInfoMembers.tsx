@@ -1,12 +1,11 @@
+import { memo } from "react";
 import { IChatRoomMember } from "../../../api/chat/chat_api";
 
 interface IChatRoomInfoMembersProps {
   members: IChatRoomMember[];
 }
 
-export default function ChatRoomInfoMembers({
-  members,
-}: IChatRoomInfoMembersProps) {
+const ChatRoomInfoMembers = memo(({ members }: IChatRoomInfoMembersProps) => {
   return (
     <>
       <div className="chat_room_info_member">
@@ -25,4 +24,6 @@ export default function ChatRoomInfoMembers({
       </div>
     </>
   );
-}
+});
+
+export default ChatRoomInfoMembers;
