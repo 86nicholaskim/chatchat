@@ -34,7 +34,6 @@ export default function ChatRoomInfoMembers({
         <h3>Members</h3>
         <ul>
           {members.map((memberInfo) => {
-            debugger;
             return (
               <li key={memberInfo.key} className={memberInfo.member_class}>
                 <div className={`${memberInfo.member_class}-content`}>

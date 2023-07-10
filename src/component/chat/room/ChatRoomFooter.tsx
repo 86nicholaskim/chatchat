@@ -4,73 +4,37 @@ import { IChatRoom } from "../../../api/chat/chat_api";
 
 interface IChatRoomFooter {
   //setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  //setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
   userId: string;
   chatId: string;
-  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
+  dispatch: Dispatch<any>;
 }
 
 export default function ChatRoomFooter({
-  setChatRoom,
+  //setChatRoom,
+  dispatch,
   userId,
   chatId,
 }: IChatRoomFooter) {
   const [newMsg, setMsg] = useState("");
 
   const sendChatMessage = (e: React.UIEvent) => {
-    // var $li = document.createElement("li");
-    // var $div = document.createElement("div");
-
-    // var $div_msg = document.createElement("div");
-    // var $div_user = document.createElement("div");
-    // var $div_write_time = document.createElement("div");
-
-    // var $input = document.getElementById(
-    //   "send_message_input"
-    // ) as HTMLInputElement;
-    // var $ul = document.getElementById("chat_room_content_container_messages");
-
-    // $div.setAttribute("class", "send_msg");
-    // $div_user.append(userId);
-    // $div.append($div_user);
-    // $div_msg.innerText = $input.value || "문의바람";
-    // $div.append($div_msg);
-    // $div_write_time.append(new Date().toLocaleTimeString("ko-KR"));
-    // $div.append($div_write_time);
-
-    // $li.appendChild($div);
-    // $ul?.append($li);
-    // $input.value = "";
     if (!newMsg) {
       return;
     }
-    //(roomData) => roomData && { ...roomData, result }
-    setChatRoom((roomData) => {
-      return {
-        ...roomData,
-        key: e.timeStamp.toString(),
-        data: roomData.data
-          ? roomData.data.concat({
-              key: e.timeStamp.toString(),
-              msg_type: "send_msg",
-              msg: newMsg,
-              userId: userId,
-              write_time: new Date().toLocaleTimeString(),
-              room_number: chatId,
-            })
-          : roomData.data,
-      };
-
-      // [
-      //   ...messgeList,
-      //   {
-      //     key: e.timeStamp.toString(),
-      //     msg_type: "send_msg",
-      //     msg: newMsg,
-      //     userId: userId,
-      //     write_time: new Date().toLocaleTimeString(),
-      //     room_number: chatId,
-      //   },
-      // ];
+    dispatch({
+      type: "add_chatroom_message",
+      chat_data: {
+        key: chatId,
+        data: {
+          key: e.timeStamp.toString(),
+          msg_type: "send_msg",
+          msg: newMsg,
+          userId: userId,
+          write_time: new Date().toLocaleTimeString(),
+          room_number: chatId,
+        },
+      },
     });
 
     console.log("sendChatMessage");

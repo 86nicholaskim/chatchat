@@ -2,10 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { IChatRoom, IRoom, getChatRoomData } from "../../../api/chat/chat_api";
 
 interface IChatRoomContents {
-  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
-  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
-  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
+  dispatch: Dispatch<any>;
   showRoomInfo: boolean;
   userId: string;
   chatId: string;
@@ -14,10 +11,7 @@ interface IChatRoomContents {
 }
 
 export default function ChatRoomContents({
-  setChatListItems,
-  setShowRoomInfo,
-  setShowChatRoom,
-  setChatRoom,
+  dispatch,
   showRoomInfo,
   userId,
   chatId,
@@ -25,24 +19,6 @@ export default function ChatRoomContents({
   chatRoom,
 }: IChatRoomContents) {
   console.log(chatCurrentData);
-
-  console.log(chatCurrentData);
-
-  // useEffect(() => {
-  //   console.log("ChatRoomContents mount/update");
-
-  //   setChatRoom((roomData) => {
-  //     return {
-  //       ...roomData,
-  //       key: chatCurrentData.key,
-  //       data: chatCurrentData.data,
-  //     };
-  //   });
-
-  //   return () => {
-  //     console.log("ChatRoomContents unmount");
-  //   };
-  // }, []);
 
   return (
     <>
@@ -55,16 +31,7 @@ export default function ChatRoomContents({
             <button
               onClick={(e) => {
                 console.log("멤버보기");
-                debugger;
-                setShowRoomInfo((show) => !show);
-
-                // document.getElementById("chat_room_info_container")?.hidden
-                //   ? document
-                //       .getElementById("chat_room_info_container")
-                //       ?.removeAttribute("hidden")
-                //   : document
-                //       .getElementById("chat_room_info_container")
-                //       ?.setAttribute("hidden", "");
+                dispatch({ type: "show_roominfo" });
               }}
             >
               멤버보기
@@ -72,25 +39,15 @@ export default function ChatRoomContents({
             <button
               id="exit"
               onClick={(e) => {
-                setChatListItems((items) =>
-                  items.filter((item) => item.key !== chatId)
-                );
+                console.log("exit: " + chatId);
+
+                dispatch({ type: "remove_chat", remove_chat_id: chatId });
 
                 // chat info
-                showRoomInfo && setShowRoomInfo((showRoom) => !showRoom);
+                showRoomInfo && dispatch({ type: "show_roominfo" });
 
                 // chat room
-                setShowChatRoom((show) => !show);
-
-                // // chat info
-                // document
-                //   .getElementById("chat_room_info_container")
-                //   ?.setAttribute("hidden", "");
-
-                // // chat room
-                // document
-                //   .getElementById("chat_room_container")
-                //   ?.setAttribute("hidden", "");
+                dispatch({ type: "show_chatroom" });
               }}
             >
               나가기

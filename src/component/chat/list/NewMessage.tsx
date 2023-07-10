@@ -1,24 +1,22 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { getChatRoomData, IChatRoom, IRoom } from "../../../api/chat/chat_api";
+import {
+  getChatRoomData,
+  IChatRoom,
+  IRoom,
+  setChatRoomData,
+} from "../../../api/chat/chat_api";
 
 interface INewMessage {
-  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
-  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
-  setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
+  dispatch: Dispatch<any>;
   showRoomInfo: boolean;
   showChatRoom: boolean;
 }
 
 export default function NewMessage({
-  setChatListItems,
-  setShowChatRoom,
-  setChatRoom,
-  setShowRoomInfo,
+  dispatch,
   showRoomInfo,
   showChatRoom,
 }: INewMessage) {
-  //const input = useRef(null);
   const [newRoom, setNewRoom] = useState("");
 
   const createChatRoom = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -28,40 +26,33 @@ export default function NewMessage({
     if (e.nativeEvent.isComposing) {
       return;
     }
-    // console.log("new_room_input");
-    // var $li = document.createElement("li");
-    // var $div = document.createElement("div");
-    // var $input = document.getElementById("new_room_input") as HTMLInputElement;
-
-    // $div.innerText = $input.value || "chatList New";
-    // $li.appendChild($div);
-
-    // var $ul = document.getElementById("chat_list_all");
-    // $ul?.append($li);
 
     document.getElementById("new_room")?.setAttribute("hidden", "");
 
-    setChatListItems((items) => {
-      return [...items, { key: newRoom }];
-    });
-    setShowChatRoom((showRoom) => !showRoom);
+    dispatch({ type: "add_chat", add_chat_id: { key: newRoom } });
+
+    dispatch({ type: "update_chat_id", chat_id: newRoom });
+
     setNewRoom((input) => {
       console.log(input);
       return "";
     });
 
+    // setChatRoomData(newRoom) chat_api파일 함수에 임시데이터값에 추가
+    setChatRoomData(newRoom);
     getChatRoomData(newRoom).then((result) => {
-      debugger;
       console.log(newRoom);
-      setChatRoom((roomData) => {
-        return {
-          ...roomData,
+      dispatch({
+        type: "set_chatroom",
+        chat_data: {
           key: result.key,
           data: result.data,
           members: result.members,
-        };
+        },
       });
     });
+
+    dispatch({ type: "show_chatroom" });
   };
 
   return (
@@ -73,12 +64,13 @@ export default function NewMessage({
             <button
               onClick={() => {
                 document.getElementById("new_room")?.removeAttribute("hidden");
-                debugger;
                 // chat info
-                showRoomInfo && setShowRoomInfo((showRoom) => !showRoom);
+                //showRoomInfo && setShowRoomInfo((showRoom) => !showRoom);
+                showRoomInfo && dispatch({ type: "show_roominfo" });
 
                 // chat room
-                showChatRoom && setShowChatRoom((show) => !show);
+                //showChatRoom && setShowChatRoom((show) => !show);
+                showChatRoom && dispatch({ type: "show_chatroom" });
               }}
             >
               (+)New

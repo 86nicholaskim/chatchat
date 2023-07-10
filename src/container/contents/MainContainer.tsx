@@ -1,7 +1,7 @@
 import ChatList from "../../component/chat/list/ChatList";
 import ChatRoom from "../../component/chat/room/ChatRoom";
 import ChatRoomInfo from "../../component/chat/roomInfo/ChatRoomInfo";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useReducer } from "react";
 import { getChatRoomData, IChatRoom, IRoom } from "../../api/chat/chat_api";
 export default function MainContainer() {
   const _chatList = [
@@ -16,51 +16,69 @@ export default function MainContainer() {
     data: [],
   };
 
-  const [chatList, setChatListItems] = useState(_chatList || []);
-  const [chatId, setChatId] = useState("");
-  const [showChatRoom, setShowChatRoom] = useState(false);
-  const [showRoomInfo, setShowRoomInfo] = useState(false);
+  const reducer = (state: any, action: any) => {
+    switch (action.type) {
+      case "set_chatroom":
+        return {
+          ...state,
+          chat_room: {
+            ...action.chat_data,
+          },
+        };
+      case "add_chatroom_message":
+        return {
+          ...state,
+          chat_room: {
+            ...state.chat_room,
+            data: [...state.chat_room.data, action.chat_data.data],
+          },
+        };
+      case "show_chatroom":
+        return { ...state, showChatRoom: !state.showChatRoom };
+      case "show_roominfo":
+        return { ...state, showRoomInfo: !state.showRoomInfo };
+      case "update_chat_id":
+        return {
+          ...state,
+          chat_id: action.chat_id,
+        };
 
-  const [chatRoom, setChatRoom] = useState<IChatRoom>(initChatData);
-
-  const chatData = useRef<IChatRoom>(initChatData);
-
-  // const chatRoomRef = useRef({
-  //   getChatRoomData: () =>
-  //     getChatRoomData(chatId).then((result) => {
-  //       chatData.current = result;
-  //       // setChatRoom((roomData) => {
-  //       //   return { ...roomData, key: result.key, data: result.data };
-  //       // });
-  //     }),
-  // });
+      case "remove_chat":
+        return {
+          ...state,
+          chat_list: state.chat_list.filter(
+            (item: any) => item.key !== action.remove_chat_id
+          ),
+        };
+      case "add_chat":
+        return {
+          ...state,
+          chat_list: [...state.chat_list, action.add_chat_id],
+        };
+      default:
+        throw Error("Unknown action: " + action.type);
+    }
+  };
+  const [state, dispatch] = useReducer(reducer, {
+    chat_id: "",
+    chat_list: _chatList,
+    showChatRoom: false,
+    showRoomInfo: false,
+    chat_room: initChatData as IChatRoom,
+  });
 
   useEffect(() => {
     console.log("MainContainer mount/update");
 
-    // const roomData = getChatRoomData(chatId);
-    // console.log(roomData);
-    // setChatRoom((data) => {
-    //   console.log(roomData);
-    //   debugger;
-    //   return {
-    //     ...data,
-    //     key: roomData.key,
-    //     data: roomData.data,
-    //     members: roomData.members,
-    //   };
-    // });
-
-    getChatRoomData(chatId).then((result) => {
-      debugger;
-      console.log(chatId);
-      setChatRoom((roomData) => {
-        return {
-          ...roomData,
+    getChatRoomData(state.chat_id).then((result) => {
+      console.log(state.chat_id);
+      dispatch({
+        type: "set_chatroom",
+        chat_data: {
           key: result.key,
           data: result.data,
           members: result.members,
-        };
+        },
       });
     });
 
@@ -76,37 +94,25 @@ export default function MainContainer() {
       <main className="app_content" id="app_content">
         <div className="wrapper_chat">
           <ChatList
-            setChatListItems={setChatListItems}
-            setShowChatRoom={setShowChatRoom}
-            setChatRoom={setChatRoom}
-            setShowRoomInfo={setShowRoomInfo}
-            setChatId={setChatId}
-            chatList={chatList}
-            //chatCurrentData={chatData.current}
-            chatCurrentData={chatRoom}
-            showRoomInfo={showRoomInfo}
-            showChatRoom={showChatRoom}
+            dispatch={dispatch}
+            chatList={state.chat_list}
+            chatCurrentData={state.chat_room}
+            showRoomInfo={state.showRoomInfo}
+            showChatRoom={state.showChatRoom}
           />
-          {showChatRoom ? (
+          {state.showChatRoom ? (
             <ChatRoom
-              chatList={chatList}
-              setShowChatRoom={setShowChatRoom}
-              setChatListItems={setChatListItems}
-              setShowRoomInfo={setShowRoomInfo}
-              showRoomInfo={showRoomInfo}
-              setChatRoom={setChatRoom}
+              dispatch={dispatch}
+              showRoomInfo={state.showRoomInfo}
               userId="user_1"
-              chatId={chatId}
-              //chatCurrentData={chatData.current}
-              chatCurrentData={chatRoom}
-              chatRoom={chatRoom}
+              chatList={state.chat_list}
+              chatId={state.chat_id}
+              chatCurrentData={state.chat_room}
+              chatRoom={state.chat_room}
             />
           ) : null}
-          {showRoomInfo ? (
-            <ChatRoomInfo
-              //chatCurrentData={chatData.current}
-              chatCurrentData={chatRoom}
-            />
+          {state.showRoomInfo ? (
+            <ChatRoomInfo chatCurrentData={state.chat_room} />
           ) : null}
         </div>
       </main>

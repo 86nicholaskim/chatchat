@@ -5,23 +5,20 @@ import PinnedMessage from "./PinnedMessage";
 import { IChatRoom } from "../../../api/chat/chat_api";
 
 interface IChatList {
-  setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  setShowChatRoom: Dispatch<SetStateAction<boolean>>;
-  setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
+  dispatch: Dispatch<any>;
+  // setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
+  // setShowChatRoom: Dispatch<SetStateAction<boolean>>;
+  // setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
+  // setChatId: Dispatch<SetStateAction<string>>;
+  // setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
   chatList: { key: string }[];
   chatCurrentData: IChatRoom;
-  setChatId: Dispatch<SetStateAction<string>>;
-  setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
   showRoomInfo: boolean;
   showChatRoom: boolean;
 }
 
 export default function ChatList({
-  setChatListItems,
-  setShowChatRoom,
-  setChatId,
-  setChatRoom,
-  setShowRoomInfo,
+  dispatch,
   chatList,
   chatCurrentData,
   showRoomInfo,
@@ -36,19 +33,14 @@ export default function ChatList({
           </div>
           <div className="chat_list_contents">
             <NewMessage
-              setShowChatRoom={setShowChatRoom}
-              setChatListItems={setChatListItems}
-              setChatRoom={setChatRoom}
-              setShowRoomInfo={setShowRoomInfo}
+              dispatch={dispatch}
               showRoomInfo={showRoomInfo}
               showChatRoom={showChatRoom}
             />
             <PinnedMessage />
             <AllMessage
+              dispatch={dispatch}
               chatList={chatList}
-              setChatId={setChatId}
-              setShowChatRoom={setShowChatRoom}
-              setChatRoom={setChatRoom}
               chatCurrentData={chatCurrentData}
             />
           </div>
