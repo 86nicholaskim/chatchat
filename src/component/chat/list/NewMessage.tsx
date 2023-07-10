@@ -65,11 +65,9 @@ export default function NewMessage({
               onClick={() => {
                 document.getElementById("new_room")?.removeAttribute("hidden");
                 // chat info
-                //showRoomInfo && setShowRoomInfo((showRoom) => !showRoom);
                 showRoomInfo && dispatch({ type: "show_roominfo" });
 
                 // chat room
-                //showChatRoom && setShowChatRoom((show) => !show);
                 showChatRoom && dispatch({ type: "show_chatroom" });
               }}
             >

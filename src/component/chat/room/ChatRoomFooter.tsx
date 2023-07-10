@@ -3,15 +3,12 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { IChatRoom } from "../../../api/chat/chat_api";
 
 interface IChatRoomFooter {
-  //setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  //setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
   userId: string;
   chatId: string;
   dispatch: Dispatch<any>;
 }
 
 export default function ChatRoomFooter({
-  //setChatRoom,
   dispatch,
   userId,
   chatId,

@@ -4,6 +4,7 @@ import ChatRoomInfo from "../../component/chat/roomInfo/ChatRoomInfo";
 import { useRef, useState, useEffect, useReducer } from "react";
 import { getChatRoomData, IChatRoom, IRoom } from "../../api/chat/chat_api";
 export default function MainContainer() {
+  const _userId = "user_id_1";
   const _chatList = [
     { key: "chatList_#001" },
     { key: "chatList_#002" },
@@ -82,8 +83,6 @@ export default function MainContainer() {
       });
     });
 
-    // const chatDataApi = chatRoomRef.current;
-    // chatDataApi.getChatRoomData();
     return () => {
       console.log("MainContainer unmount");
     };
@@ -104,7 +103,7 @@ export default function MainContainer() {
             <ChatRoom
               dispatch={dispatch}
               showRoomInfo={state.showRoomInfo}
-              userId="user_1"
+              userId={_userId}
               chatList={state.chat_list}
               chatId={state.chat_id}
               chatCurrentData={state.chat_room}

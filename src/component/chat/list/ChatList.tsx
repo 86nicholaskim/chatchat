@@ -6,11 +6,6 @@ import { IChatRoom } from "../../../api/chat/chat_api";
 
 interface IChatList {
   dispatch: Dispatch<any>;
-  // setChatListItems: Dispatch<SetStateAction<{ key: string }[]>>;
-  // setShowChatRoom: Dispatch<SetStateAction<boolean>>;
-  // setChatRoom: Dispatch<SetStateAction<IChatRoom>>;
-  // setChatId: Dispatch<SetStateAction<string>>;
-  // setShowRoomInfo: Dispatch<SetStateAction<boolean>>;
   chatList: { key: string }[];
   chatCurrentData: IChatRoom;
   showRoomInfo: boolean;
