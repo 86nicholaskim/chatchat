@@ -1,9 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import { JsxElement } from "typescript";
-import { IChatRoom, getChatRoomData } from "../../../api/chat/chat_api";
+import {
+  IChatRoom,
+  IChatRoomKey,
+  getChatRoomData,
+} from "../../../api/chat/chat_api";
 
 interface IAllMessage {
-  chatList: { key: string }[];
+  chatList: IChatRoomKey[];
   chatCurrentData: IChatRoom;
   dispatch: Dispatch<any>;
 }
@@ -50,7 +54,7 @@ export default function AllMessage({
             <li key={item.key}>
               <div className="chat_list_item">
                 <div onClick={onClickList} className="chat_title">
-                  {item.key}
+                  {item.title}
                 </div>
               </div>
             </li>

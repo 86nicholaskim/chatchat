@@ -1,12 +1,13 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch } from "react";
 import AllMessage from "./AllMessage";
 import NewMessage from "./NewMessage";
 import PinnedMessage from "./PinnedMessage";
-import { IChatRoom } from "../../../api/chat/chat_api";
+import { IChatRoom, IChatRoomKey } from "../../../api/chat/chat_api";
+import Search from "./Search";
 
 interface IChatList {
   dispatch: Dispatch<any>;
-  chatList: { key: string }[];
+  chatList: IChatRoomKey[];
   chatCurrentData: IChatRoom;
   showRoomInfo: boolean;
   showChatRoom: boolean;
@@ -32,6 +33,7 @@ export default function ChatList({
               showRoomInfo={showRoomInfo}
               showChatRoom={showChatRoom}
             />
+            <Search dispatch={dispatch} />
             <PinnedMessage />
             <AllMessage
               dispatch={dispatch}

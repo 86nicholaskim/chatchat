@@ -6,8 +6,13 @@ export interface IRoom {
   write_time?: string;
   room_number?: string;
 }
-export interface IChatRoom {
+
+export interface IChatRoomKey {
   key: string;
+  title: string;
+}
+
+export interface IChatRoom extends IChatRoomKey {
   members: {
     key?: string;
     member_name?: string;
@@ -27,6 +32,7 @@ export interface IChatRoomMember {
 const chatRoomData = [
   {
     key: "chatList_#001",
+    title: "대화방방방01",
     members: [
       {
         key: "113111.800000004",
@@ -92,6 +98,7 @@ const chatRoomData = [
   },
   {
     key: "chatList_#002",
+    title: "대화방방방02",
     members: [
       {
         key: "113344.800000004",
@@ -125,6 +132,7 @@ const chatRoomData = [
   },
   {
     key: "chatList_#003",
+    title: "대화방방방03",
     members: [
       {
         key: "114344.800000004",
@@ -160,6 +168,7 @@ const chatRoomData = [
 
 let initRoomData = {
   key: "",
+  title: "",
   members: [],
   data: [
     {
@@ -173,9 +182,13 @@ let initRoomData = {
   ],
 } as IChatRoom;
 
-export async function setChatRoomData(chatId: string): Promise<boolean> {
+export async function setChatRoomData(
+  key: string,
+  title: string
+): Promise<boolean> {
   let result = false;
-  initRoomData.key = chatId;
+  initRoomData.key = key;
+  initRoomData.title = title;
 
   await setTimeout(() => {
     chatRoomData.push(initRoomData);

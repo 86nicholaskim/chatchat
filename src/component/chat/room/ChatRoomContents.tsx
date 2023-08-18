@@ -17,7 +17,7 @@ const ChatRoomContents = memo(
         <div className="chat_content">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div className="left_toolbar">
-              <div className="chat_title">{chatCurrentData.key}</div>
+              <div className="chat_title">{chatCurrentData.title}</div>
             </div>
             <div className="right_toolbar">
               <button

@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, useState } from "react";
 import {
   getChatRoomData,
   IChatRoom,
+  IChatRoomKey,
   IRoom,
   setChatRoomData,
 } from "../../../api/chat/chat_api";
@@ -26,12 +27,15 @@ export default function NewMessage({
     if (e.nativeEvent.isComposing) {
       return;
     }
-
+    const key = `${e.timeStamp}`;
     document.getElementById("new_room")?.setAttribute("hidden", "");
 
-    dispatch({ type: "add_chat", add_chat_id: { key: newRoom } });
+    dispatch({
+      type: "add_chat",
+      add: { key: key, title: newRoom } as IChatRoomKey,
+    });
 
-    dispatch({ type: "update_chat_id", chat_id: newRoom });
+    dispatch({ type: "update_chat_id", title: newRoom });
 
     setNewRoom((input) => {
       console.log(input);
@@ -39,13 +43,14 @@ export default function NewMessage({
     });
 
     // setChatRoomData(newRoom) chat_api파일 함수에 임시데이터값에 추가
-    setChatRoomData(newRoom);
-    getChatRoomData(newRoom).then((result) => {
-      console.log(newRoom);
+    setChatRoomData(key, newRoom);
+    getChatRoomData(key).then((result) => {
+      console.log(key);
       dispatch({
         type: "set_chatroom",
         chat_data: {
           key: result.key,
+          title: result.title,
           data: result.data,
           members: result.members,
         },
@@ -85,10 +90,6 @@ export default function NewMessage({
             onKeyDown={createChatRoom}
             placeholder="Enter New Room Name."
           />
-        </div>
-        <div id="search">
-          <div className="search_button" id="search_button"></div>
-          <input placeholder="Search" />
         </div>
       </div>
     </>
