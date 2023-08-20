@@ -1,14 +1,16 @@
 import ChatList from "../../component/chat/list/ChatList";
-import ChatRoom from "../../component/chat/room/ChatRoom";
-import ChatRoomInfo from "../../component/chat/roomInfo/ChatRoomInfo";
-import { useRef, useState, useEffect, useReducer } from "react";
+import { memo, useCallback, useEffect, useReducer } from "react";
 import {
   getChatRoomData,
   IChatRoom,
   IChatRoomKey,
-  IRoom,
+  IChatState,
 } from "../../api/chat/chat_api";
 import { reducer } from "../../reducer/ chat/reducer";
+import { useInit } from "../../hook/chat/use_init";
+import ChatRoom from "../../component/chat/room/ChatRoom";
+import ChatRoomInfo from "../../component/chat/roomInfo/ChatRoomInfo";
+import Main from "../../component/layout/Main";
 
 const _userId = "user_id_1";
 const _chatList: IChatRoomKey[] = [
@@ -24,39 +26,46 @@ const initChatData: IChatRoom = {
   data: [],
 };
 
-export default function MainContainer() {
-  const [state, dispatch] = useReducer(reducer, {
+const MainContainer = memo(() => {
+  const [state, dispatch] = useReducer<
+    (state: IChatState, action: any) => IChatState
+  >(reducer, {
     chat_id: "",
-    _chat_list: _chatList.slice() as unknown as IChatRoomKey,
-    chat_list: _chatList as unknown as IChatRoomKey,
+    _chat_list: _chatList.slice() as IChatRoomKey[],
+    chat_list: _chatList as IChatRoomKey[],
     showChatRoom: false,
     showRoomInfo: false,
     chat_room: initChatData as IChatRoom,
   });
 
-  useEffect(() => {
-    console.log("MainContainer mount/update");
-
-    getChatRoomData(state.chat_id).then((result) => {
-      console.log(state.chat_id);
-      dispatch({
-        type: "set_chatroom",
-        chat_data: {
-          key: result.key,
-          data: result.data,
-          members: result.members,
-        },
-      });
+  const initRoomAsync = useCallback(async () => {
+    const result = await getChatRoomData(state.chat_id);
+    dispatch({
+      type: "set_chatroom",
+      chat_data: {
+        key: result.key,
+        title: result.title,
+        data: result.data,
+        members: result.members,
+      },
     });
+  }, [state.chat_id]);
 
-    return () => {
-      console.log("MainContainer unmount");
-    };
-  }, []);
+  // useEffect(() => {
+  //   console.log("useInit mount/update");
+
+  //   initRoomAsync();
+
+  //   return () => {
+  //     console.log("useInit unmount");
+  //   };
+  // }, []);
+
+  useInit({ initAsync: initRoomAsync });
 
   return (
     <>
-      <main className="app_content" id="app_content">
+      <Main>
         <div className="wrapper_chat">
           <ChatList
             dispatch={dispatch}
@@ -70,7 +79,6 @@ export default function MainContainer() {
               dispatch={dispatch}
               showRoomInfo={state.showRoomInfo}
               userId={_userId}
-              chatList={state.chat_list}
               chatId={state.chat_id}
               chatCurrentData={state.chat_room}
               chatRoom={state.chat_room}
@@ -80,7 +88,8 @@ export default function MainContainer() {
             <ChatRoomInfo chatCurrentData={state.chat_room} />
           ) : null}
         </div>
-      </main>
+      </Main>
     </>
   );
-}
+});
+export default MainContainer;

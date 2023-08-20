@@ -1,6 +1,12 @@
-import { IChatRoom, IChatRoomKey } from "../../api/chat/chat_api";
+import { IChatRoom, IChatState, IChatRoomKey } from "../../api/chat/chat_api";
 
-export const reducer = (state: any, action: any) => {
+export interface IChatAction {
+  chat_data: IChatRoom & IChatRoomKey;
+  title: string;
+  add: IChatRoomKey;
+}
+
+export const reducer = (state: IChatState, action: IChatAction | any) => {
   switch (action.type) {
     case "set_chatroom":
       return {

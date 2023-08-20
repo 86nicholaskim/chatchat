@@ -1,4 +1,4 @@
-import { Dispatch, memo } from "react";
+import { Dispatch, memo, useCallback } from "react";
 import { IChatRoom } from "../../../api/chat/chat_api";
 
 interface IChatRoomContents {
@@ -12,6 +12,23 @@ interface IChatRoomContents {
 
 const ChatRoomContents = memo(
   ({ dispatch, showRoomInfo, chatId, chatCurrentData }: IChatRoomContents) => {
+    const onClickShowMember = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("멤버보기");
+        dispatch({ type: "show_roominfo" });
+      },
+      [dispatch]
+    );
+
+    const onClickExit = useCallback(
+      (e: React.MouseEvent) => {
+        dispatch({ type: "remove_chat", remove_chat_id: chatId });
+        showRoomInfo && dispatch({ type: "show_roominfo" });
+        dispatch({ type: "show_chatroom" });
+      },
+      [chatId, dispatch, showRoomInfo]
+    );
+
     return (
       <>
         <div className="chat_content">
@@ -20,28 +37,8 @@ const ChatRoomContents = memo(
               <div className="chat_title">{chatCurrentData.title}</div>
             </div>
             <div className="right_toolbar">
-              <button
-                onClick={(e) => {
-                  console.log("멤버보기");
-                  dispatch({ type: "show_roominfo" });
-                }}
-              >
-                멤버보기
-              </button>
-              <button
-                id="exit"
-                onClick={(e) => {
-                  console.log("exit: " + chatId);
-
-                  dispatch({ type: "remove_chat", remove_chat_id: chatId });
-
-                  // chat info
-                  showRoomInfo && dispatch({ type: "show_roominfo" });
-
-                  // chat room
-                  dispatch({ type: "show_chatroom" });
-                }}
-              >
+              <button onClick={onClickShowMember}>멤버보기</button>
+              <button id="exit" onClick={onClickExit}>
                 나가기
               </button>
             </div>

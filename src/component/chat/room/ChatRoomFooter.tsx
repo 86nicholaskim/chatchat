@@ -1,6 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
-
-import { IChatRoom } from "../../../api/chat/chat_api";
+import { ChangeEvent, Dispatch, useCallback, useMemo, useState } from "react";
 
 interface IChatRoomFooter {
   userId: string;
@@ -51,30 +49,39 @@ export default function ChatRoomFooter({
     sendChatMessage(e);
   };
 
+  const onChangeMessage = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setMsg(e.target.value);
+    },
+    []
+  );
+
+  const onKeyUp = useCallback((e: React.KeyboardEvent) => {
+    if (e.code === "Enter") {
+      console.log(e);
+      return;
+    }
+  }, []);
+
+  const send_roket = useMemo(() => String.fromCodePoint(0x1f680), []);
+
   return (
     <>
       <div className="chat_room_footer">
         <div className="chat_room_footer_message">
           <input
             id="send_message_input"
-            placeholder="Type a message"
+            placeholder="message"
             value={newMsg}
-            onChange={(e) => {
-              setMsg(e.target.value);
-            }}
-            onKeyUp={(e) => {
-              if (e.code === "Enter") {
-                console.log(e);
-                return;
-              }
-            }}
+            onChange={onChangeMessage}
+            onKeyUp={onKeyUp}
             onKeyDown={sendChatMessageByEnter}
           ></input>
           <div className="img">[img]</div>
           <div className="map">[map]</div>
           <div className="mic">[mic]</div>
           <button id="send_message_button" onClick={sendChatMessage}>
-            {String.fromCodePoint(0x1f680)}
+            {send_roket}
           </button>
         </div>
       </div>

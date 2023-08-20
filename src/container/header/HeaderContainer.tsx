@@ -1,7 +1,9 @@
+import Header from "../../component/layout/Header";
+
 export default function HeaderContainer() {
   return (
     <>
-      <header className="app_header" id="app_header"></header>
+      <Header></Header>
     </>
   );
 }

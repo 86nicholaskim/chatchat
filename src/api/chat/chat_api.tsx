@@ -6,7 +6,14 @@ export interface IRoom {
   write_time?: string;
   room_number?: string;
 }
-
+export interface IChatState {
+  chat_id: string;
+  _chat_list: IChatRoomKey[];
+  chat_list: IChatRoomKey[];
+  showChatRoom: boolean;
+  showRoomInfo: boolean;
+  chat_room: IChatRoom;
+}
 export interface IChatRoomKey {
   key: string;
   title: string;
@@ -186,21 +193,23 @@ export async function setChatRoomData(
   key: string,
   title: string
 ): Promise<boolean> {
-  let result = false;
   initRoomData.key = key;
   initRoomData.title = title;
 
-  await setTimeout(() => {
-    chatRoomData.push(initRoomData);
-    result = true;
-  }, 1000);
-  return result;
+  setTimeout(() => {}, 1000);
+  if (chatRoomData.find((item) => item.title === title)) {
+    alert("이미 존재하는 대화방입니다.");
+    return false;
+  }
+
+  chatRoomData.push(initRoomData);
+  return true;
 }
 
 export async function getChatRoomData(chatId: string): Promise<IChatRoom> {
   console.log("getChatRoomData");
 
-  await setTimeout(() => {
+  setTimeout(() => {
     console.log("await call ");
   }, 500);
   return (
