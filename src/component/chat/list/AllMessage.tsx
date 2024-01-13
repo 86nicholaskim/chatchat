@@ -20,9 +20,7 @@ export default function AllMessage({
 }: IAllMessage) {
   const onClickList = useCallback(
     async (e: React.UIEvent<HTMLElement, MouseEvent>) => {
-      const chatTitle = e.currentTarget.innerText;
-      const chatKey =
-        chatList.find((item) => item.title === chatTitle)?.key || "";
+      const chatKey = e.currentTarget.id || "";
 
       dispatch({ type: "update_chat_id", chat_id: chatKey });
 
@@ -38,7 +36,7 @@ export default function AllMessage({
       });
       dispatch({ type: "show_chatroom" });
     },
-    [chatList, dispatch]
+    [dispatch]
   );
 
   return (
@@ -48,11 +46,9 @@ export default function AllMessage({
 
         <ul id="chat_list_all">
           {chatList.map((item) => (
-            <li key={item.key}>
+            <li key={item.key} id={item.key} onClick={onClickList}>
               <div className="chat_list_item">
-                <div onClick={onClickList} className="chat_title">
-                  {item.title}
-                </div>
+                <div className="chat_title">{item.title}</div>
               </div>
             </li>
           ))}

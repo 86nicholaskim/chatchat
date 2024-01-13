@@ -1,15 +1,12 @@
-import { ChangeEvent, Dispatch, memo, useCallback } from "react";
+import { ChangeEvent, memo, useCallback } from "react";
+import { ISearchProps } from "./ChatList";
 
-interface ISearchProps {
-  dispatch: Dispatch<any>;
-}
-
-const Search = memo(({ dispatch }: ISearchProps) => {
+const Search = memo(({ onSearch }: ISearchProps) => {
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      dispatch({ type: "search_keyword", keyword: e.target.value });
+      onSearch({ keyword: e.target.value });
     },
-    [dispatch]
+    [onSearch]
   );
 
   return (

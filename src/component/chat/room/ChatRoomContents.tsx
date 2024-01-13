@@ -22,12 +22,14 @@ const ChatRoomContents = memo(
 
     const onClickExit = useCallback(
       (e: React.MouseEvent) => {
-        dispatch({ type: "remove_chat", remove_chat_id: chatId });
+        dispatch({ type: "remove_chat", remove_chat_id: chatCurrentData.key });
         showRoomInfo && dispatch({ type: "show_roominfo" });
         dispatch({ type: "show_chatroom" });
       },
       [chatId, dispatch, showRoomInfo]
     );
+
+    console.log(chatCurrentData);
 
     return (
       <>

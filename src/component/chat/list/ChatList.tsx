@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Dispatch, useCallback, useEffect, useState } from "react";
 import AllMessage from "./AllMessage";
 import NewMessage from "./NewMessage";
 import PinnedMessage from "./PinnedMessage";
@@ -13,6 +13,10 @@ interface IChatList {
   showChatRoom: boolean;
 }
 
+export interface ISearchProps {
+  onSearch: ({ keyword }: { keyword: string }) => void;
+}
+
 export default function ChatList({
   dispatch,
   chatList,
@@ -20,6 +24,26 @@ export default function ChatList({
   showRoomInfo,
   showChatRoom,
 }: IChatList) {
+  const [chat_list_view, setChatListView] = useState(chatList);
+
+  const onSearch: ISearchProps["onSearch"] = useCallback(
+    ({ keyword }) => {
+      if (!keyword) {
+        setChatListView(chatList);
+        return;
+      }
+
+      setChatListView((prev) =>
+        chatList.filter((item) => item.title.includes(keyword))
+      );
+    },
+    [chatList]
+  );
+
+  useEffect(() => {
+    setChatListView(chatList);
+  }, [chatList]);
+
   return (
     <>
       <div className="chat_list_container">
@@ -33,11 +57,11 @@ export default function ChatList({
               showRoomInfo={showRoomInfo}
               showChatRoom={showChatRoom}
             />
-            <Search dispatch={dispatch} />
+            <Search onSearch={onSearch} />
             <PinnedMessage />
             <AllMessage
               dispatch={dispatch}
-              chatList={chatList}
+              chatList={chat_list_view}
               chatCurrentData={chatCurrentData}
             />
           </div>

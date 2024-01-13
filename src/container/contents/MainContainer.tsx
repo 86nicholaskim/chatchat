@@ -1,5 +1,5 @@
 import ChatList from "../../component/chat/list/ChatList";
-import { memo, useCallback, useEffect, useReducer } from "react";
+import { memo, useCallback, useReducer } from "react";
 import {
   getChatRoomData,
   IChatRoom,
@@ -31,7 +31,6 @@ const MainContainer = memo(() => {
     (state: IChatState, action: any) => IChatState
   >(reducer, {
     chat_id: "",
-    _chat_list: _chatList.slice() as IChatRoomKey[],
     chat_list: _chatList as IChatRoomKey[],
     showChatRoom: false,
     showRoomInfo: false,
@@ -50,16 +49,6 @@ const MainContainer = memo(() => {
       },
     });
   }, [state.chat_id]);
-
-  // useEffect(() => {
-  //   console.log("useInit mount/update");
-
-  //   initRoomAsync();
-
-  //   return () => {
-  //     console.log("useInit unmount");
-  //   };
-  // }, []);
 
   useInit({ initAsync: initRoomAsync });
 

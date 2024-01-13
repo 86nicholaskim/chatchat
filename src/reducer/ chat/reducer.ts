@@ -34,25 +34,21 @@ export const reducer = (state: IChatState, action: IChatAction | any) => {
       };
 
     case "remove_chat":
-      const remove = state.chat_list.filter(
-        (item: any) => item.key !== action.remove_chat_id
-      );
       return {
         ...state,
-        chat_list: remove,
-        _chat_list: remove,
+        chat_list: state.chat_list.filter(
+          (item: any) => item.key !== action.remove_chat_id
+        ),
       };
     case "add_chat":
-      const add = [...state.chat_list, action.add];
       return {
         ...state,
-        chat_list: add,
-        _chat_list: add,
+        chat_list: [...state.chat_list, action.add],
       };
     case "search_keyword":
       return {
         ...state,
-        chat_list: state._chat_list.filter((item: IChatRoomKey) =>
+        chat_list: state.chat_list.filter((item: IChatRoomKey) =>
           item.title.includes(action.keyword)
         ),
       };
